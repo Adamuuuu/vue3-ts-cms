@@ -1,7 +1,13 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>app</h1>
+  <div class="app">
+    <router-view></router-view>
+  </div>
 </template>
-
-<style scoped></style>
+<script setup lang="ts"></script>
+<style scoped>
+.app {
+  width: 100vw;
+  height: 100vh;
+  background: url(@/assets/imges/背景图.jpg);
+}
+</style>
