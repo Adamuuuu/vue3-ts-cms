@@ -9,12 +9,7 @@
 // console.log(import.meta.env.PROD); // 是否生产环境
 // console.log(import.meta.env.SSR); // 是否是服务器端渲染(server side render)
 
-let BASE_URL = "";
-if (import.meta.env.PROD) {
-  BASE_URL = "http://152.136.185.210:5000";
-} else {
-  BASE_URL = "http://152.136.185.210:4000";
-}
+const BASE_URL = "http://111.230.245.205:8880";
 
 // console.log(BASE_URL);
 
