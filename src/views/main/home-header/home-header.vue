@@ -6,7 +6,7 @@
           <component :is="isfolf ? 'Expand' : 'Fold'"></component>
         </el-icon>
       </div>
-      <div class="breadcrumb">面包屑</div>
+      <div class="breadcrumb"><headerBrendcrumb /></div>
     </div>
 
     <div class="info">
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import headerInfo from "./c-cpns/header-info.vue";
+import headerBrendcrumb from "./c-cpns/header-brendcrumb.vue";
 const emit = defineEmits(["foldchange"]);
 const isfolf = ref(false);
 //内部改变状态

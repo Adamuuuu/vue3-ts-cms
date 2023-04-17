@@ -50,7 +50,7 @@ import {
   Setting,
 } from "@element-plus/icons-vue";
 
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { mapPathToMenu } from "@/utils/map-menu";
 defineProps({
@@ -82,8 +82,11 @@ function handleItemClick(item: any) {
 
 //监听item的点击
 const route = useRoute();
-const pathMenu = mapPathToMenu(route.path, useMenu);
-const defineActive = ref(pathMenu.id + "");
+
+const defineActive = computed(() => {
+  const pathMenu = mapPathToMenu(route.path, useMenu);
+  return pathMenu.id + "";
+});
 </script>
 
 <style scoped lang="less">

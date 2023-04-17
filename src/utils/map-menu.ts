@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
-
+import type { IBreadcrume } from "@/interface/index";
+import type { IUserMenu } from "@/interface/index";
 function localRoutesResult() {
   const localRoutes: RouteRecordRaw[] = [];
   //注意路径
@@ -28,7 +29,14 @@ export function mapMenuToRouter(userMenuTree: any[]) {
     for (const submenu of menu.children) {
       const route = localRoutes.find((item) => item.path === submenu.url);
 
-      if (route) routes.push(route);
+      if (route) {
+        //给顶层菜单增加一个重定向
+        if (!routes.find((item) => item.path === menu.path)) {
+          routes.push({ path: menu.url, redirect: route.path });
+        }
+        //将二级菜单注册
+        routes.push(route);
+      }
       if (!firstMenu && route) firstMenu = submenu;
     }
   return routes;
@@ -41,4 +49,21 @@ export function mapPathToMenu(path: string, userMenu: any[]) {
         return submenu;
       }
     }
+}
+
+export function mapPathToBreadcrumb(path: string, userMenu: IUserMenu[]) {
+  const breadcrume: IBreadcrume[] = [];
+  for (const menu of userMenu) {
+    if (menu.children) {
+      for (const submenu of menu.children) {
+        if (submenu.url === path) {
+          breadcrume.push({ name: menu.name, path: menu.url });
+
+          breadcrume.push({ name: submenu.name, path: submenu.url });
+        }
+      }
+    }
+  }
+
+  return breadcrume;
 }

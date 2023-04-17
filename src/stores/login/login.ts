@@ -9,11 +9,12 @@ import { localCache } from "@/utils/cache";
 import type { RouteRecordRaw } from "vue-router";
 import router from "@/router";
 import { mapMenuToRouter } from "@/utils/map-menu";
+import type { IUserMenu } from "@/interface";
 const useLoginStore = defineStore("login", {
   state: () => ({
     token: "",
     userInfo: {},
-    userMenu: {},
+    userMenu: <IUserMenu[]>{},
   }),
   actions: {
     async loginAccountAction(account: any) {
