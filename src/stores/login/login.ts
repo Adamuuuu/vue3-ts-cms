@@ -10,6 +10,7 @@ import type { RouteRecordRaw } from "vue-router";
 import router from "@/router";
 import { mapMenuToRouter } from "@/utils/map-menu";
 import type { IUserMenu } from "@/interface";
+import { useMainDataStore } from "../main/main";
 const useLoginStore = defineStore("login", {
   state: () => ({
     token: "",
@@ -46,7 +47,8 @@ const useLoginStore = defineStore("login", {
         this.token = token;
         this.userInfo = userInfo;
         this.userMenu = userMenu;
-
+        const mainStore = useMainDataStore();
+        mainStore.fetchData();
         //动态添加路由
         const routes = mapMenuToRouter(userMenu);
         routes.forEach((route) => router.addRoute("main", route));

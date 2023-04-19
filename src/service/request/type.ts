@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 
-// 针对InternalAxiosRequestConfig配置进行扩展
+// 针对AxiosRequestConfig配置进行扩展
 export interface HYInterceptors<T = AxiosResponse> {
   requestSuccessFn?: (config: AxiosRequestConfig) => AxiosRequestConfig;
   requestFailureFn?: (err: any) => any;

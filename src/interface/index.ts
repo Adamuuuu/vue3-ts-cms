@@ -28,3 +28,19 @@ export interface IList {
   updateAt: string;
   realname: string;
 }
+
+export interface IQueryPage {
+  size: number;
+  offset: number;
+}
+
+export interface IUserData {
+  id?: number;
+  name: string;
+  realname: string;
+  password: string;
+  cellphone: number;
+  departmentId: number;
+  roleId: number;
+  [propName: string]: any;
+}
