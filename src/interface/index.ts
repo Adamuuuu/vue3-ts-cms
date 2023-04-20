@@ -42,5 +42,17 @@ export interface IUserData {
   cellphone: number;
   departmentId: number;
   roleId: number;
+  leader: string;
+  parentId: number;
+  [propName: string]: any;
+}
+
+export interface IDepartmentData {
+  id: number;
+  name: string;
+  leader?: string;
+  parentId?: number;
+  createAt: string;
+  updateAt: string;
   [propName: string]: any;
 }

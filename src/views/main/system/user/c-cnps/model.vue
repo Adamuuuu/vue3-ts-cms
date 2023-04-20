@@ -87,7 +87,7 @@ const isNewRef = ref(true);
 const exitData = ref();
 defineExpose({ setDialogVisible });
 
-const formData: IUserData = reactive({
+const formData: any = reactive({
   name: "",
   realname: "",
   password: "",

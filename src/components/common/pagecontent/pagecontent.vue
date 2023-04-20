@@ -4,35 +4,52 @@
 <template>
   <div class="content">
     <div class="header">
-      <h3>用户列表</h3>
-      <el-button type="primary" @click="handleCreateData()">新建数据</el-button>
+      <h3>{{ prop.title }}列表</h3>
+      <el-button type="primary" @click="handleCreateData()"
+        >新建{{ prop.title }}</el-button
+      >
     </div>
     <div class="main">
       <el-table :data="List" stripe border style="width: 100%">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column type="index" label="序号" width="55" align="center" />
+        <template v-for="item in contentConfig.tableItems" :key="item.prop">
+          <template v-if="item.prop === 'enable'">
+            <el-table-column
+              :label="item.label"
+              :prop="item.prop"
+              align="center"
+            >
+              <template #default="scoped">
+                <el-button
+                  :type="scoped.row.enable ? 'primary' : 'danger'"
+                  plain
+                  >{{ scoped.row.enable ? "启用" : "禁用" }}</el-button
+                >
+              </template>
+            </el-table-column>
+          </template>
+          <template v-if="item.prop === 'createAt' || item.prop === 'updateAt'">
+            <el-table-column
+              :label="item.label"
+              :prop="item.prop"
+              align="center"
+            >
+              <template #default="scoped">
+                {{ formatUTC(scoped.row.createAt) }}
+              </template>
+            </el-table-column>
+          </template>
 
-        <el-table-column label="用户名" prop="name" align="center" />
-        <el-table-column label="真实名" prop="realname" align="center" />
-        <el-table-column label="手机号码" prop="cellphone" align="center" />
-        <el-table-column label="状态" prop="enable" align="center">
-          <template #default="scoped">
-            <el-button :type="scoped.row.enable ? 'primary' : 'danger'" plain>{{
-              scoped.row.enable ? "启用" : "禁用"
-            }}</el-button>
+          <template v-else>
+            <el-table-column>
+              <el-table-column
+                :label="item.label"
+                :prop="item.prop"
+                align="center"
+            /></el-table-column>
           </template>
-        </el-table-column>
-        <el-table-column label="创建时间" prop="createAt" align="center">
-          <template #default="scoped">
-            {{ formatUTC(scoped.row.createAt) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="更新时间" prop="updateAt" align="center">
-          <template #default="scoped">
-            {{ formatUTC(scoped.row.updateAt) }}
-          </template>
-        </el-table-column>
-
+        </template>
         <el-table-column label="操作" prop="operator" align="center">
           <template #default="scoped">
             <el-button
@@ -71,41 +88,55 @@
 </template>
 
 <script setup lang="ts">
-import usersListStore from "@/stores/users/users-list";
+import pageListStore from "@/stores/page/page";
 import { storeToRefs } from "pinia";
 import { formatUTC } from "@/utils/format";
-import type { IUserData } from "@/interface";
 import { ref } from "vue";
+//通过父组件传过来的参数完成对表格表头内容的封装
+interface IProp {
+  contentConfig: {
+    tableItems: any[];
+  };
+  page: string;
+  title: string;
+}
 
-const store = usersListStore();
-const { List } = storeToRefs(usersListStore());
+const prop = defineProps<IProp>();
+
+const store = pageListStore();
+const { List } = storeToRefs(pageListStore());
 const emit = defineEmits(["newBtnClick", "exitBtnClick"]);
 
 const currentPage = ref(1);
 const pageSize = ref(10);
-fatchUsersListDate();
+
+fatchPageListDate();
 function handleSizeChange() {
-  fatchUsersListDate();
+  fatchPageListDate();
 }
 function handleCurrentChange() {
-  fatchUsersListDate();
+  fatchPageListDate();
 }
 
-function fatchUsersListDate(formData: any = {}) {
+//这个函数主要完成查询的操作  获取当前分页器每一页以及总共多少页的数据  然后通过这些数据向服务器发送post请求获得表格中的数据
+//另外这个函数还可能接受一个参数 当我们搜索的时候也能调用这个函数，从父组件传入搜索的关键字，然后将关键字也放入请求体之中去获取数据
+function fatchPageListDate(formData: any = {}) {
   const size = pageSize.value;
   const offset = (currentPage.value - 1) * size;
   const PageInfo = { size, offset };
   const queryInfo = { ...PageInfo, ...formData };
-  store.postUsersListActions(queryInfo);
+  store.postPageListActions(prop.page, queryInfo);
 }
-
-defineExpose({ fatchUsersListDate });
+//将这个函数暴露给父组件供父组件完成搜索和重置的功能
+defineExpose({ fatchPageListDate });
 //删除用户功能
 function handleDeleteClick(id: number) {
-  store.deleteUsersActions(id);
+  store.deletePageActions(prop.page, id);
 }
+
+//将新建和编辑的事件发送给父组件，父组件接收到事件后调用model中的函数完成这两项操作
 //编辑用户功能
-function handleEditClick(formData: IUserData) {
+function handleEditClick(formData: any) {
   console.log(formData);
   emit("exitBtnClick", formData);
 }
