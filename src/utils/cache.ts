@@ -3,7 +3,7 @@ enum CacheType {
   Session,
 }
 
-class Cache {
+class createCache {
   storage: Storage;
   constructor(type: CacheType) {
     this.storage = type === CacheType.Local ? localStorage : sessionStorage;
@@ -27,6 +27,6 @@ class Cache {
   }
 }
 
-const localCache = new Cache(CacheType.Local);
-const sessionCache = new Cache(CacheType.Session);
+const localCache = new createCache(CacheType.Local);
+const sessionCache = new createCache(CacheType.Session);
 export { localCache, sessionCache };

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="header">
-      <h1>后台管理系统</h1>
+      <h1 style="color: aqua">后台管理系统</h1>
     </div>
     <div class="main">
       <!-- 表单验证主体 -->

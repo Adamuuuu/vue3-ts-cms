@@ -7,7 +7,7 @@
     <div class="main">
       <!-- <h5 class="mb-2">Custom colors</h5> -->
       <el-menu
-        :default-active="defineActive"
+        :default-active="1"
         active-background-color="#0b5cbf"
         background-color="#02142d"
         class="el-menu-vertical"

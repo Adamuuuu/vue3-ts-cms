@@ -9,7 +9,7 @@
 // console.log(import.meta.env.PROD); // 是否生产环境
 // console.log(import.meta.env.SSR); // 是否是服务器端渲染(server side render)
 
-const BASE_URL = "http://111.230.245.205:8880";
+const BASE_URL = "http://localhost:8880";
 
 // console.log(BASE_URL);
 
